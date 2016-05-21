@@ -1,0 +1,62 @@
+= Kafka Connect Elasticsearch
+:uri-download-confluent-platform: http://www.confluent.io/developer#download
+:uri-download-elasticsearch: https://www.elastic.co/downloads/elasticsearch
+
+Stream data from Apache Kafka to Elasticsearch using Kafka Connect.
+
+== Usage
+
+ . Install {uri-download-elasticsearch}[Elasticsearch 2.3.3]
++
+```
+cd elasticsearch-2.3.3
+bin/elasticsearch
+```
+ . Install {uri-download-confluent-platform}[Confluent Platform 2.0.1]
++
+```
+cd confluent-2.0.1
+```
++
+.terminal 1
+```
+/bin/zookeeper-server-start ./etc/kafka/zookeeper.properties
+```
++
+.terminal 2
+```
+/bin/kafka-server-start ./etc/kafka/server.properties
+```
+ . Clone this project and build
++
+```
+git clone https://github.com/yuzutech/kafka-connect-elasticsearch.git
+cd kafka-connect-elasticsearch
+mvn clean package
+```
+ . Export `CLASSPATH` and launch Kafka connect in standalone mode
++
+```
+export CLASSPATH=/path/to/kafka-connect-elasticsearch/workspace/target/kafka-connect-elasticsearch-all.jar
+cd confluent-2.0.1
+cp /path/to/kafka-connect-elasticsearch/workspace/samples/config/standalone.properties .
+cp /path/to/kafka-connect-elasticsearch/workspace/samples/config/connector.properties .
+bin/connect-standalone standalone.properties connector.properties
+```
+ . Start Kafka REST Proxy
++
+.terminal 3
+```
+bin/kafka-rest-start
+```
+ . Produce JSON messages
++
+```sh
+curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json" \
+      --data '{"records":[{"value":{"foo":"bar"}}]}' "http://localhost:8082/topics/lolcat"
+```
+ . View your data in Elasticsearch!
++
+```
+curl -XGET http://localhost:9200/lolcat/_search
+```
