@@ -43,8 +43,9 @@ public class ElasticsearchSinkTask extends SinkTask {
         for (SinkRecord record : records) {
             try {
                 String value = reader.readValue(record);
-                log.info("Processing {}", value);
-                client.index(value);
+                log.trace("Processing {}", value);
+                // TODO Flush after X seconds if no new record is sent
+                client.bulk(value);
             } catch (IOException e) {
                 throw new RetriableException("Error while indexing data");
             }
@@ -57,5 +58,10 @@ public class ElasticsearchSinkTask extends SinkTask {
 
     @Override
     public void stop() {
+        try {
+            client.flush();
+        } catch (IOException e) {
+            throw new ConnectException("Error while indexing remaining data");
+        }
     }
 }

@@ -1,0 +1,11 @@
+{
+  "name": "kafka-connect-elasticsearch",
+  "config": {
+    "index": "lolcat",
+    "type": "cat",
+    "bulk.size": "10000",
+    "connector.class": "org.yuzutech.kafka.connect.elasticsearch.ElasticsearchSinkConnector",
+    "tasks.max": 1,
+    "topics": "lolcat"
+  }
+}
