@@ -14,7 +14,6 @@ import java.util.Map;
 public class ElasticsearchSinkConnector extends SinkConnector {
 
     private Map<String, String> config;
-    private RecordReader reader;
 
     @Override
     public String version() {
