@@ -3,6 +3,8 @@ package org.yuzutech.kafka.connect.elasticsearch;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
 
+import java.text.MessageFormat;
+import java.util.Date;
 import java.util.Map;
 
 import static org.apache.kafka.common.config.ConfigDef.Importance;
@@ -52,7 +54,10 @@ public class ElasticSearchSinkConnectorConfig extends AbstractConfig {
     }
 
     public String getIndexName() {
-        return getString(INDEX);
+        String indexName = getString(INDEX);
+        MessageFormat messageFormat = new MessageFormat(indexName);
+        Object[] arguments = {new Date()};
+        return messageFormat.format(arguments);
     }
 
     public String getIndexType() {
