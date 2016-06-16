@@ -4,18 +4,19 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import rx.Subscriber;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ElasticsearchHTTPClient {
 
     private static final Logger log = LoggerFactory.getLogger(ElasticsearchHTTPClient.class);
 
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static final MediaType BINARY = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
 
     private OkHttpClient client;
@@ -23,8 +24,7 @@ public class ElasticsearchHTTPClient {
     private final String uri;
     private final int bulkSize;
     private final String bulkIndexLine;
-
-    private List<String> bulkData = new ArrayList<>();
+    private final ReactiveBuffer reactiveBuffer;
 
     public ElasticsearchHTTPClient(ElasticsearchSinkConnectorConfig config) {
         this.client = new OkHttpClient();
@@ -36,34 +36,52 @@ public class ElasticsearchHTTPClient {
         String indexType = config.getIndexType();
         this.bulkSize = config.getBulkSize();
         this.bulkIndexLine = "{ \"index\" : { \"_index\" : \"" + indexName + "\", \"_type\" : \"" + indexType + "\" } }\n";
+        this.reactiveBuffer = new ReactiveBuffer(config.getIdleFlushTime(), TimeUnit.MILLISECONDS, bulkSize);
+        this.reactiveBuffer.getBuffer().subscribe(new Subscriber<List<String>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+            }
+
+            @Override
+            public void onNext(List<String> values) {
+                if (values == null || values.isEmpty()) {
+                    return;
+                }
+                try {
+                    String data = buildBulkData(values);
+                    log.trace("Sending bulk " + data);
+                    RequestBody body = RequestBody.create(BINARY, data);
+                    Request request = new Request.Builder()
+                        .url(uri + "/_bulk")
+                        .post(body)
+                        .build();
+                    client.newCall(request).execute();
+                } catch (IOException e) {
+                    log.error("Error while indexing data", e);
+                }
+            }
+        });
     }
 
-    public void bulk(String json) throws IOException {
-        bulkData.add(json);
-        if (bulkData.size() == bulkSize) {
-            flush();
-        }
+    public void bulk(String value) {
+        this.reactiveBuffer.put(value);
     }
 
-    public String buildBulkData() {
+    public void stop() {
+        this.reactiveBuffer.onCompleted();
+    }
+
+    private String buildBulkData(List<String> bulkData) {
         StringBuilder sb = new StringBuilder(bulkSize * bulkIndexLine.length() + bulkSize * 100);
-        for (String data: bulkData) {
+        for (String data : bulkData) {
             sb.append(bulkIndexLine);
             sb.append(data);
             sb.append("\n");
         }
         return sb.toString();
-    }
-
-    public void flush() throws IOException {
-        String data = buildBulkData();
-        log.trace("Sending bulk " + data);
-        RequestBody body = RequestBody.create(BINARY, data);
-        Request request = new Request.Builder()
-                .url(uri + "/_bulk")
-                .post(body)
-                .build();
-        client.newCall(request).execute();
-        bulkData.clear();
     }
 }

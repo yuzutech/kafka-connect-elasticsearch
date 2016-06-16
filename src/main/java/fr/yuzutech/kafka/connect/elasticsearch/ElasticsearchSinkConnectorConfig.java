@@ -27,6 +27,9 @@ public class ElasticsearchSinkConnectorConfig extends AbstractConfig {
     public static final String BULK_SIZE = "bulk.size";
     private static final String BULK_SIZE_DOC = "The number of messages to be bulk indexed into elasticsearch. Default is: 1000";
 
+    public static final String IDLE_FLUSH_TIME_MS = "idle.flush.time.ms";
+    private static final String IDLE_FLUSH_TIME_MS_DOC = "The amount of time in milliseconds since last flush before a flush is forced. Default is: 5000ms";
+
     static ConfigDef config = new ConfigDef()
             .define(PROTOCOL, Type.STRING, "http", Importance.HIGH, "")
             .define(HOST, Type.STRING, "localhost", Importance.HIGH, "")
@@ -35,7 +38,8 @@ public class ElasticsearchSinkConnectorConfig extends AbstractConfig {
             .define(PASSWORD, Type.STRING, "", Importance.HIGH, "")
             .define(INDEX, Type.STRING, "kafka-index", Importance.HIGH, INDEX_DOC)
             .define(TYPE, Type.STRING, "", Importance.HIGH, TYPE_DOC)
-            .define(BULK_SIZE, Type.INT, 1000, Importance.HIGH, BULK_SIZE_DOC);
+            .define(BULK_SIZE, Type.INT, 1000, Importance.HIGH, BULK_SIZE_DOC)
+            .define(IDLE_FLUSH_TIME_MS, Type.INT, 5000, Importance.HIGH, IDLE_FLUSH_TIME_MS_DOC);
 
     public ElasticsearchSinkConnectorConfig(Map<String, String> props) {
         super(config, props);
@@ -66,6 +70,10 @@ public class ElasticsearchSinkConnectorConfig extends AbstractConfig {
 
     public Integer getBulkSize() {
         return getInt(BULK_SIZE);
+    }
+
+    public Integer getIdleFlushTime() {
+        return getInt(IDLE_FLUSH_TIME_MS);
     }
 
     public static ConfigDef getConfig() {
