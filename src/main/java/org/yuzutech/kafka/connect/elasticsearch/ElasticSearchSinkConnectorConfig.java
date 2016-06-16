@@ -67,4 +67,8 @@ public class ElasticSearchSinkConnectorConfig extends AbstractConfig {
     public Integer getBulkSize() {
         return getInt(BULK_SIZE);
     }
+
+    public static ConfigDef getConfig() {
+      return config;
+    }
 }
