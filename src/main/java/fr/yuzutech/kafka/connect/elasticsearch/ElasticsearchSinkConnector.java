@@ -1,4 +1,4 @@
-package org.yuzutech.kafka.connect.elasticsearch;
+package fr.yuzutech.kafka.connect.elasticsearch;
 
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;

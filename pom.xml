@@ -5,7 +5,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.yuzutech.kafka-connect-elasticsearch</groupId>
+  <groupId>fr.yuzutech.kafka-connect-elasticsearch</groupId>
   <artifactId>kafka-connect-elasticsearch</artifactId>
   <packaging>jar</packaging>
   <version>0.2.0-SNAPSHOT</version>
@@ -14,19 +14,12 @@
     A Kafka Connect Elasticsearch connector to load from Kafka to Elasticsearch
   </description>
 
-  <licenses>
-    <license>
-      <name>MIT</name>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <scm>
-    <connection>scm:git:git://github.com/yuzutech/kafka-connect-elasticsearch.git</connection>
-    <developerConnection>scm:git:git@github.com:yuzutech/kafka-connect-elasticsearch.git</developerConnection>
-    <url>https://github.com/yuzutech/kafka-connect-elasticsearch</url>
-    <tag>HEAD</tag>
-  </scm>
+  <!-- Required for OSS maven repository deployment -->
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
 
   <properties>
     <kafka.version>0.10.0.0</kafka.version>
@@ -37,6 +30,22 @@
     <assertj.version>1.7.1</assertj.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Guillaume Grossetie</name>
+      <email>ggrossetie@yuzutech.fr</email>
+      <organization>Yuzu tech</organization>
+      <organizationUrl>https://www.yuzutech.fr</organizationUrl>
+    </developer>
+  </developers>
 
   <dependencies>
     <dependency>
@@ -87,6 +96,18 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <scm>
+    <connection>scm:git:git://github.com/yuzutech/kafka-connect-elasticsearch.git</connection>
+    <developerConnection>scm:git:git@github.com:yuzutech/kafka-connect-elasticsearch.git</developerConnection>
+    <url>https://github.com/yuzutech/kafka-connect-elasticsearch</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/yuzutech/kafka-connect-elasticsearch/issues/</url>
+  </issueManagement>
 
   <build>
     <plugins>

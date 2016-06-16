@@ -1,4 +1,4 @@
-package org.yuzutech.kafka.connect.elasticsearch;
+package fr.yuzutech.kafka.connect.elasticsearch;
 
 import org.apache.kafka.connect.connector.ConnectRecord;
 

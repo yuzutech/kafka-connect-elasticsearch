@@ -53,10 +53,10 @@ bin/kafka-rest-start
 +
 ```sh
 curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json" \
-      --data '{"records":[{"value":{"foo":"bar"}}]}' "http://localhost:8082/topics/lolcat"
+      --data '{"records":[{"value":{"foo":"bar"}}]}' "http://localhost:8082/topics/baz"
 ```
  . View your data in Elasticsearch!
 +
 ```
-curl -XGET http://localhost:9200/lolcat/_search
+curl -XGET http://localhost:9200/qux/_search
 ```

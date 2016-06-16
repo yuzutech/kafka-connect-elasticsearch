@@ -1,4 +1,4 @@
-package org.yuzutech.kafka.connect.elasticsearch;
+package fr.yuzutech.kafka.connect.elasticsearch;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
