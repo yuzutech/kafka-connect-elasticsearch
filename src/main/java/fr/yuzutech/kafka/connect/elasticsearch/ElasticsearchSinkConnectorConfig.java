@@ -10,7 +10,7 @@ import java.util.Map;
 import static org.apache.kafka.common.config.ConfigDef.Importance;
 import static org.apache.kafka.common.config.ConfigDef.Type;
 
-public class ElasticSearchSinkConnectorConfig extends AbstractConfig {
+public class ElasticsearchSinkConnectorConfig extends AbstractConfig {
 
     public static final String PROTOCOL = "protocol";
     public static final String HOST = "host";
@@ -37,7 +37,7 @@ public class ElasticSearchSinkConnectorConfig extends AbstractConfig {
             .define(TYPE, Type.STRING, "", Importance.HIGH, TYPE_DOC)
             .define(BULK_SIZE, Type.INT, 1000, Importance.HIGH, BULK_SIZE_DOC);
 
-    public ElasticSearchSinkConnectorConfig(Map<String, String> props) {
+    public ElasticsearchSinkConnectorConfig(Map<String, String> props) {
         super(config, props);
     }
 

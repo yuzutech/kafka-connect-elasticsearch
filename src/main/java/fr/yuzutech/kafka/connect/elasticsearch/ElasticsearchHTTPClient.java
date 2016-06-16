@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ElasticSearchHTTPClient {
+public class ElasticsearchHTTPClient {
 
-    private static final Logger log = LoggerFactory.getLogger(ElasticSearchHTTPClient.class);
+    private static final Logger log = LoggerFactory.getLogger(ElasticsearchHTTPClient.class);
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static final MediaType BINARY = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
@@ -26,7 +26,7 @@ public class ElasticSearchHTTPClient {
 
     private List<String> bulkData = new ArrayList<>();
 
-    public ElasticSearchHTTPClient(ElasticSearchSinkConnectorConfig config) {
+    public ElasticsearchHTTPClient(ElasticsearchSinkConnectorConfig config) {
         this.client = new OkHttpClient();
         String protocol = config.getProtocol();
         String host = config.getHost();

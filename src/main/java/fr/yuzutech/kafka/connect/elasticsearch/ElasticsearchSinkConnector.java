@@ -25,7 +25,7 @@ public class ElasticsearchSinkConnector extends SinkConnector {
     public void start(Map<String, String> configProperties) {
         try {
             this.configProperties = configProperties;
-            new ElasticSearchSinkConnectorConfig(configProperties);
+            new ElasticsearchSinkConnectorConfig(configProperties);
         } catch (ConfigException e) {
             throw new ConnectException("Couldn't start ElasticsearchSinkConnector due to configuration error", e);
         }
@@ -53,6 +53,6 @@ public class ElasticsearchSinkConnector extends SinkConnector {
 
     @Override
     public ConfigDef config() {
-        return ElasticSearchSinkConnectorConfig.getConfig();
+        return ElasticsearchSinkConnectorConfig.getConfig();
     }
 }

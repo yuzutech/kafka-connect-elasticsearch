@@ -19,7 +19,7 @@ public class ElasticsearchSinkTask extends SinkTask {
 
     private static final Logger log = LoggerFactory.getLogger(ElasticsearchSinkTask.class);
 
-    private ElasticSearchHTTPClient client;
+    private ElasticsearchHTTPClient client;
     private RecordReader reader;
 
     @Override
@@ -30,8 +30,8 @@ public class ElasticsearchSinkTask extends SinkTask {
     @Override
     public void start(Map<String, String> props) {
         try {
-            ElasticSearchSinkConnectorConfig config = new ElasticSearchSinkConnectorConfig(props);
-            this.client = new ElasticSearchHTTPClient(config);
+            ElasticsearchSinkConnectorConfig config = new ElasticsearchSinkConnectorConfig(props);
+            this.client = new ElasticsearchHTTPClient(config);
         } catch (ConfigException e) {
             throw new ConnectException("Couldn't start " + ElasticsearchSinkConnector.class.getName() + " due to configuration error.", e);
         }
