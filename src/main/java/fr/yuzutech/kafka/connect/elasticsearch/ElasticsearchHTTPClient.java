@@ -59,6 +59,7 @@ public class ElasticsearchHTTPClient {
                         .url(uri + "/_bulk")
                         .post(body)
                         .build();
+                    log.info("Sending " + values.size() + " records");
                     client.newCall(request).execute();
                 } catch (IOException e) {
                     log.error("Error while indexing data", e);
